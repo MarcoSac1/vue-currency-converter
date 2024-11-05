@@ -9,7 +9,7 @@ export default{
         }
     },
     props:{
-        archetypes:{
+        currencies:{
             type: Array,
             required: true
         }
@@ -19,18 +19,28 @@ export default{
 </script>
 
 <template >
-    <section class="container">
-        <div class="dropdown  ">
-            <button class="btn btn-danger m-4 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                Archetypes selector
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-                <li  v-for="(archetypes, index) in archetypes" :key="index" :archetypes="archetypes"  >
-                    <a class="dropdown-item " @click="$emit('selected', archetypes.archetype_name)"  href="#">{{ archetypes.archetype_name }}</a>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <div class="row">
+        <section class="container col-6">
+            <div class="input-group m-4">
+                <input type="number" class="form-control col-6" aria-label="Text input with dropdown button">
+                <button class="btn btn-danger dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">Euro</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li  v-for="(currencies, index) in currencies" :key="index" :currencies="currencies"  >
+                        <a class="dropdown-item " @click="$emit('selected', currencies.data)"  href="#">{{ currencies }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="input-group m-4">
+                <input type="number" class="form-control col-6" aria-label="Text input with dropdown button">
+                <button class="btn btn-danger dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">United State Dollar</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li  v-for="(currencies, index) in currencies" :key="index" :currencies="currencies"  >
+                        <a class="dropdown-item " @click="$emit('selected', currencies.data)"  href="#">{{ currencies }}</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
 </template>
 <!-- v-model="cercato"  -->
 <style scoped>

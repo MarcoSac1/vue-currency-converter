@@ -10,30 +10,25 @@ export default{
     data(){
         return{
             cards:[],
-            archetypes: []
+            currencies: []
         }
     },
     methods:{
-        getCards(pippo){
-            // console.log(pippo,'https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0&archetype=' + pippo);
-            axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0&archetype=' + pippo)
-            .then((response) => {
-                console.log(response.data.data);
-                this.cards=response.data.data;
-            })
-            .catch(function(error){
-                console.log(error);
-            })
-            .finally(function () {
-                
-            });
-        },
-        getArchetypes(){
-            axios.get('https://db.ygoprodeck.com/api/v7/archetypes.php')
+
+        getConvertion(from, to, amount) {
+        axios.get(`https://api.frankfurter.app/latest?base=${from}&symbols=${to}`)
+        .then((resp) => resp.json())
+        .then((data) => {
+        const convertedAmount = (amount * data.rates[to]).toFixed(2);
+        alert(`${amount} ${from} = ${convertedAmount} ${to}`);
+        });
+    },
+        getCurrency(){
+            axios.get('https://api.frankfurter.app/currencies')
             .then((response) => {
                 console.log(response.data);
-                this.archetypes=response.data;
-                console.log(this.archetypes);
+                this.currencies=response.data;
+                console.log(this.currencies);
             })
             .catch(function(error){
                 console.log(error);
@@ -45,8 +40,8 @@ export default{
 
     },
     created(){
-        this.getCards();
-        this.getArchetypes();
+        this.getConvertion();
+        this.getCurrency();
     }
 
 }
@@ -54,7 +49,7 @@ export default{
 
 <template>
     <main>
-        <AppSearch @selected='getCards':archetypes="archetypes"/>
+        <AppSearch @selected='getConvertion':currencies="currencies"/>
         <CardList :cards="cards"/>
     </main>
 </template>
