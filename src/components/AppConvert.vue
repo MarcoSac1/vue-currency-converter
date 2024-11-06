@@ -3,27 +3,50 @@ export default{
     components: {
         
     },
+
     data(){
         return{
             value1:'',
-            value2:'',
+            value2: '',
             fromCurrency: 'EUR',  // Valuta di partenza di default
             toCurrency: 'USD',    // Valuta di destinazione di default
-            currencies: []
+            currencies: [],
         }
     },
+
     props:{
         currencies:{
             type: Array,
             required: true
         }
-    }
-    
-}
+    },
 
+    watch: {
+    // Ricalcola la conversione ogni volta che cambia una delle valute o l'importo di input
+    fromCurrency: 'updateConversion',
+    toCurrency: 'updateConversion',
+    value1: 'updateConversion',
+    },
 
+    methods: {
+    async updateConversion() {
+    if (this.value1 && this.fromCurrency && this.toCurrency) {
+    try {
+    const res = await fetch(`https://api.frankfurter.app/latest?base=${this.fromCurrency}&symbols=${this.toCurrency}`);
+    const data = await res.json();
+        this.value2 = (this.value1 * data.rates[this.toCurrency]).toFixed(2);
+        } catch (error) {
+    console.error('Errore nella conversione:', error);
+                }
+            }
+        },
+    },
 
-
+    mounted() {
+    // Esegue la conversione all'avvio del componente
+    this.updateConversion();
+        },
+    };
 </script>
 
 <template>
@@ -58,7 +81,7 @@ export default{
         </section>
     </div>
 </template>
-<!-- v-model="cercato"  -->
+
 <style scoped>
     .dropdown-menu {
         max-height: 500px;

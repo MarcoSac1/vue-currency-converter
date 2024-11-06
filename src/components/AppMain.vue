@@ -1,11 +1,9 @@
 <script>
-import AppSearch from './AppSearch.vue';
-import CardList from './CardList.vue';
+import AppConvert from './AppConvert.vue';
 import axios from 'axios';
 export default{
     components: {
-        CardList,
-        AppSearch
+        AppConvert
     },
     data(){
         return{
@@ -13,16 +11,10 @@ export default{
             currencies: []
         }
     },
+    
     methods:{
 
-        getConvertion(from, to, amount) {
-        axios.get(`https://api.frankfurter.app/latest?base=${from}&symbols=${to}`)
-        .then((resp) => resp.json())
-        .then((data) => {
-        const convertedAmount = (amount * data.rates[to]).toFixed(2);
-        alert(`${amount} ${from} = ${convertedAmount} ${to}`);
-        });
-    },
+
         getCurrency(){
             axios.get('https://api.frankfurter.app/currencies')
             .then((response) => {
@@ -40,7 +32,6 @@ export default{
 
     },
     created(){
-        this.getConvertion();
         this.getCurrency();
     }
 
@@ -49,8 +40,7 @@ export default{
 
 <template>
     <main>
-        <AppSearch @selected='getConvertion':currencies="currencies"/>
-        <CardList :cards="cards"/>
+        <AppConvert :currencies="currencies"/>
     </main>
 </template>
 
