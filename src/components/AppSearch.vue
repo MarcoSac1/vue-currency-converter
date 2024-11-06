@@ -7,6 +7,9 @@ export default{
         return{
             value1:'',
             value2:'',
+            fromCurrency: 'EUR',  // Valuta di partenza di default
+            toCurrency: 'USD',    // Valuta di destinazione di default
+            currencies: []
         }
     },
     props:{
@@ -23,34 +26,33 @@ export default{
 
 </script>
 
-<template >
+<template>
     <div class="row">
         <section class="container col-6">
             <div class="input-group m-4">
-                <input type="number first" v-model="value1" class="form-control col-6" aria-label="Text input with dropdown button">
-                <button class="btn btn-danger dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">Euro</button>
+                <input type="number" v-model="value1" @input="updateConversion" class="form-control col-6" aria-label="Text input with dropdown button">
+                <button class="btn btn-danger dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ fromCurrency }}</button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li  v-for="(currencies, index) in currencies" :key="index" :currencies="currencies"  >
-                        <a class="dropdown-item " @click="$emit('selected', currencies.data)"  href="#">{{ currencies }}</a>
+                    <li v-for="(currency, index) in currencies" :key="index">
+                        <a class="dropdown-item" @click="fromCurrency = currency">{{ currency }}</a>
                     </li>
                 </ul>
             </div>
             <div class="input-group m-4">
-                <input type="number second" v-model="value2" class="form-control col-6" aria-label="Text input with dropdown button">
-                <button class="btn btn-danger dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">United State Dollar</button>
+                <input type="number" v-model="value2" class="form-control col-6" aria-label="Text input with dropdown button">
+                <button class="btn btn-danger dropdown-toggle col-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ toCurrency }}</button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li  v-for="(currencies, index) in currencies" :key="index" :currencies="currencies"  >
-                        <a class="dropdown-item " @click="$emit('selected', currencies.data)"  href="#">{{ currencies }}</a>
+                    <li v-for="(currency, index) in currencies" :key="index">
+                        <a class="dropdown-item" @click="toCurrency = currency">{{ currency }}</a>
                     </li>
                 </ul>
             </div>
-            <div class="m-4 ">
-                <p id="first-value"> 
-                    {{ value1 }} corrisponde a :
+            <div class="m-4">
+                <p id="first-value">
+                    {{ value1 }} {{ fromCurrency }} corrisponde a: 
                 </p>
                 <h1 class="second-value">
-                    {{ value2 }}
-    
+                    {{ value2 }} {{ toCurrency }}
                 </h1>
             </div>
         </section>
